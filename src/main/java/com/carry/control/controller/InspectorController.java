@@ -61,7 +61,7 @@ public class InspectorController {
             errorcode.put("message","meiquanxian");
             responseData.setErrorcode(errorcode);
         }
-
+        responseData.setStatus(200);
         return  responseData;
     }
     @RequestMapping(value = "/getInspectorData")
@@ -79,6 +79,25 @@ public class InspectorController {
             errorcode.put("message","meiquanxian");
             responseData.setErrorcode(errorcode);
         }
+        responseData.setStatus(200);
+        return  responseData;
+    }
+
+    @RequestMapping(value = "/getEquipmentData")
+    public CommonResponse<Map>  getInspectorData(@RequestParam("token") String token) {
+        CommonResponse responseData = new CommonResponse();
+        String userVer = identityVerification.shortVerification(token);
+        if (userVer != null ) {
+
+            Map<Object ,Object> data = inspectorService.getEquipmentData();
+            responseData.setData(data);
+        } else {
+            Map<String , Object> errorcode  = Maps.newHashMap();
+            errorcode.put("code",1000);
+            errorcode.put("message","meiquanxian");
+            responseData.setErrorcode(errorcode);
+        }
+        responseData.setStatus(200);
         return  responseData;
     }
 

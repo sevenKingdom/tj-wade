@@ -14,4 +14,6 @@ public interface InspectorService {
     List<ConstructionPlan> getListByInspectorid(Long inspectorid, Long startTime, Long endTime);
 
     Map<String, Object> getInspectorData(Long planid);
+
+    Map<Object, Object> getEquipmentData();
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import java.util.Map;
  */
 @Service
 public class InspectorServiceImpl  implements InspectorService {
+    private static final String SHOW_URL = "http://192.168.10.163:8763/file/";
     @Autowired
     private InspectorMapper inspectorMapper;
     @Autowired
@@ -46,6 +48,7 @@ public class InspectorServiceImpl  implements InspectorService {
         String[] strs = planadata.getPoint().split(",");
         data.put("longitude",strs[1]);
         data.put("latitude",strs[0]);
+
         JsonObject jsondata = configMapper.getConfig(2).getConfigdata();
         JsonObject prosessdata = jsondata.get("桥梁").getAsJsonObject().
                 get(planadata.getStructure()).getAsJsonObject().
@@ -53,7 +56,26 @@ public class InspectorServiceImpl  implements InspectorService {
         Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
         Type type = new TypeToken<Map<Object, Object>>() {}.getType();
         Map<Object, Object> map = gson.fromJson(prosessdata, type);
+        JsonObject jsonimgdata = configMapper.getConfig(5).getConfigdata();
+        String prosessimgdata = jsonimgdata.get("桥梁").getAsJsonObject().
+                get(planadata.getStructure()).getAsJsonObject().
+                get(planadata.getProcess()).getAsString();
+        data.put("img", SHOW_URL+prosessimgdata);
         data.put("entry",map);
         return data;
+    }
+
+    @Override
+    public Map<Object, Object> getEquipmentData() {
+        JsonObject jsondata = configMapper.getConfig(3).getConfigdata();
+        JsonObject jsonimgdata = configMapper.getConfig(5).getConfigdata();
+        JsonObject prosessdata = jsonimgdata.get("设备").getAsJsonObject();
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        Type type = new TypeToken<Map<Object, Object>>() {}.getType();
+        Map<Object, Object> map = gson.fromJson(jsondata, type);
+        Map<Object, Object> imgmap = gson.fromJson(prosessdata, type);
+        map.put("img",imgmap);
+        map.put("imgpath",SHOW_URL);
+        return map;
     }
 }

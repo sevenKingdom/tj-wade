@@ -13,7 +13,7 @@ public class UserData implements Serializable {
      private String token;
      private Integer role;
      private Integer post;
-
+    private Integer score;
     public Integer getPost() {
         return post;
     }
@@ -93,6 +93,14 @@ public class UserData implements Serializable {
      public void setRole(Integer role){
 	 	this.role=role;
 	 }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
 	@Override
     public String toString() {
         return "UserData{" +

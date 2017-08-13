@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by songxianying on 17/7/25.
@@ -28,18 +30,36 @@ public class NoticeController {
 
     @Autowired
     NoticeService noticeService;
-    @RequestMapping(value = "/login" ,method = RequestMethod.POST)
-    public CommonResponse<Map<String,List<String>>> getData (@RequestParam("level") int level,
-                                                      @RequestParam("department") String department) {
+
+    @RequestMapping(value = "/getNoticedata" ,method = RequestMethod.POST)
+    public CommonResponse<Map<Object, Object>> getNoticeData () {
         CommonResponse responseData = new CommonResponse();
-        Map<String,List<String>> data = noticeService.getNoticeData(level, department);
+        Map<Object,Object> data = noticeService.getNoticeData();
+        responseData.setData(data);
+        responseData.setStatus(200);
+        return responseData;
+    }
+
+    @RequestMapping(value = "/updateNotice" ,method = RequestMethod.POST)
+    public CommonResponse<Long> updateNotice (@RequestParam("id") Long id,
+                                                              @RequestParam("data") String data) {
+        CommonResponse responseData = new CommonResponse();
+        responseData.setData(noticeService.updateNotice(id,data));
+        responseData.setStatus(200);
+        return responseData;
+    }
+
+    @RequestMapping(value = "/notice" ,method = RequestMethod.POST)
+    public CommonResponse<Map<String,List<String>>> getData () {
+        CommonResponse responseData = new CommonResponse();
+        Map<String,Set<String>> data = noticeService.getNoticeData(0, "1.1.1");
         sendMail("","",data.get("mails"));
         sendPhone("",data.get("phones"));
         responseData.setData(data);
         responseData.setStatus(200);
         return responseData;
     }
-    public String  sendMail(String title, String content, List<String> mails) {
+    public String  sendMail(String title, String content, Set<String> mails) {
         StringBuffer mailstr = new StringBuffer();
         for (String str : mails) {
             mailstr.append(str + ",");
@@ -58,7 +78,7 @@ public class NoticeController {
         }
         return "ok";
     }
-    public String sendPhone(String smsText , List<String> phones){
+    public String sendPhone(String smsText , Set<String> phones){
 
         StringBuffer phonestr = new StringBuffer();
         for (String str : phones) {

@@ -1,6 +1,7 @@
 package com.carry.control.service;
 
 import com.carry.control.model.po.ConstructionPlan;
+import com.carry.control.model.po.InspectionData;
 
 import java.util.List;
 import java.util.Map;
@@ -16,4 +17,6 @@ public interface InspectorService {
     Map<String, Object> getInspectorData(Long planid);
 
     Map<Object, Object> getEquipmentData();
+
+    int creatInspectionData (InspectionData inspectionData);
 }

@@ -4,8 +4,11 @@ import com.carry.commit.CommonResponse;
 import com.carry.commit.DateUtil;
 import com.carry.control.model.po.Configdata;
 import com.carry.control.model.po.ConstructionPlan;
+import com.carry.control.model.po.InspectionData;
+import com.carry.control.model.po.UserCreat;
 import com.carry.control.service.InspectorService;
 import com.carry.control.service.TestService;
+import com.carry.control.service.UserService;
 import com.carry.util.IdentityVerification;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,9 @@ public class InspectorController {
 
     @Autowired
     private InspectorService inspectorService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/acceptPlan" ,method = RequestMethod.POST)
     public CommonResponse<Map> getTest(@RequestParam("planid") long planid ,
@@ -91,6 +97,25 @@ public class InspectorController {
 
             Map<Object ,Object> data = inspectorService.getEquipmentData();
             responseData.setData(data);
+        } else {
+            Map<String , Object> errorcode  = Maps.newHashMap();
+            errorcode.put("code",1000);
+            errorcode.put("message","meiquanxian");
+            responseData.setErrorcode(errorcode);
+        }
+        responseData.setStatus(200);
+        return  responseData;
+    }
+
+    @RequestMapping(value = "/creatInspectionData" ,method = RequestMethod.POST)
+    public CommonResponse<Integer> creatInspectionData (@RequestBody InspectionData inspectionData) {
+        CommonResponse responseData = new CommonResponse();
+        String userVer = identityVerification.shortVerification(inspectionData.getToken());
+        if (userVer != null ) {
+            inspectionData.setDepartment(userVer);
+            userService.updateUserScore(inspectionData.getClassid(),0,inspectionData.getLowquality());
+            responseData.setData(inspectorService.creatInspectionData(inspectionData));
+
         } else {
             Map<String , Object> errorcode  = Maps.newHashMap();
             errorcode.put("code",1000);

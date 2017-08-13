@@ -6,9 +6,14 @@ import com.carry.control.model.po.UserData;
 import com.carry.control.model.po.UserInfo;
 import com.carry.control.service.UserService;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -40,5 +45,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String,Object> creatUser (UserCreat userCreat) {
        return  userMapper.creatUser(userCreat);
+    }
+
+    @Override
+    public Long updateUserScore(Long id, Integer score,String data) {
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        Type type = new TypeToken<Map<Object, Object>>() {}.getType();
+        Map<Object, Object> map = gson.fromJson(data, type);
+        Map<Object, Object> mapdata = (Map<Object, Object>)map.get("item");
+        score  = 0;
+        for (Object key : mapdata.keySet()) {
+            Integer integer = (Integer) mapdata.get(key);
+            switch(integer) {
+                case 1:
+                    score += -40;
+                    break;
+                case 2:
+                    score += -30;
+                    break;
+                case 3:
+                    score += -20;
+                    break;
+                case 4:
+                    score += -10;
+                    break;
+                default:
+                    break;
+
+            }
+        }
+        return userMapper.updateUserScore(id,score);
     }
 }

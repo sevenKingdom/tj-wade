@@ -2,10 +2,13 @@ package com.carry.control.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by songxianying on 17/7/24.
  */
 public interface NoticeService {
-    public Map<String, List<String>> getNoticeData(int level, String department);
+    Map<String, Set<String>> getNoticeData(int level, String department);
+    Map<Object, Object> getNoticeData ();
+    Long updateNotice( long id, String data) ;
 }

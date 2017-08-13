@@ -1,8 +1,7 @@
 package com.carry.control.service.serviceimpl;
 
-import com.carry.control.model.dao.ConfigMapper;
-import com.carry.control.model.dao.InspectorMapper;
-import com.carry.control.model.po.ConstructionPlan;
+import com.carry.control.model.dao.*;
+import com.carry.control.model.po.*;
 import com.carry.control.service.InspectorService;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +27,13 @@ public class InspectorServiceImpl  implements InspectorService {
     private InspectorMapper inspectorMapper;
     @Autowired
     private ConfigMapper configMapper;
+    @Autowired
+    private ClassReviewRecordMapper classReviewRecordMapper;
+    @Autowired
+    private InspectionRecordMapper inspectionRecordMapper;
+    @Autowired
+    private ReviewPlanMapper reviewPlanMapper;
+
     @Override
     public long updatePlanInspector ( Long inspectorid,  Long id){
         return inspectorMapper.updatePlanInspector(inspectorid, id);
@@ -77,5 +84,37 @@ public class InspectorServiceImpl  implements InspectorService {
         map.put("img",imgmap);
         map.put("imgpath",SHOW_URL);
         return map;
+    }
+    @Override
+    public int creatInspectionData (InspectionData inspectionData) {
+        ClassReviewRecord classReviewRecord = new ClassReviewRecord();
+        InspectionRecord inspectionRecord = new InspectionRecord();
+        ReviewPlan reviewPlan = new ReviewPlan();
+        int t = 0 ;
+        changeData(classReviewRecord,inspectionRecord,reviewPlan,inspectionData);
+        t += classReviewRecordMapper.addClassReviewRecord(classReviewRecord);
+        t += inspectionRecordMapper.addInspectionRecord(inspectionRecord);
+        t += reviewPlanMapper.addReviewPlan(reviewPlan);
+        return t;
+    }
+    public void changeData (ClassReviewRecord classReviewRecord,InspectionRecord inspectionRecord,
+                            ReviewPlan reviewPlan, InspectionData inspectionData) {
+        long times = new Date().getTime();
+        classReviewRecord.setClassid(inspectionData.getClassid());
+        classReviewRecord.setPlanid(inspectionData.getPlanid());
+        classReviewRecord.setLowquality(inspectionData.getLowquality());
+        classReviewRecord.setStyle(inspectionData.getStyle());
+        classReviewRecord.setCreatedat(times);
+        inspectionRecord.setInspectorid(inspectionData.getInspectorid());
+        inspectionRecord.setLowquality(inspectionData.getLowquality());
+        inspectionRecord.setQuality(inspectionData.getQuality());
+        inspectionRecord.setStyle(inspectionData.getStyle());
+        inspectionRecord.setPlanid(inspectionData.getPlanid());
+        inspectionRecord.setCreatedat(times);
+        reviewPlan.setFirstman(inspectionData.getInspectorid());
+        reviewPlan.setLowquality(inspectionData.getLowquality());
+        reviewPlan.setPower(inspectionData.getDepartment());
+        reviewPlan.setPlanid(inspectionData.getPlanid());
+        reviewPlan.setCreatedat(times);
     }
 }

@@ -30,4 +30,7 @@ public interface UserMapper {
 
     @RequestMapping(value = "/mysql/getPlanAuthor" ,method = RequestMethod.GET)
     public String getPlanAuthor(@RequestParam("id") Long id);
+
+    @RequestMapping(value = "/updateUserScore",method = RequestMethod.GET)
+    public Long updateUserScore(@RequestParam("id") Long id, @RequestParam("score") Integer score);
 }

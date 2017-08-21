@@ -48,11 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long updateUserScore(Long id, Integer score,String data) {
-        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
-        Type type = new TypeToken<Map<Object, Object>>() {}.getType();
-        Map<Object, Object> map = gson.fromJson(data, type);
-        Map<Object, Object> mapdata = (Map<Object, Object>)map.get("item");
+    public Long updateUserScore(Long id, Integer score,Map<Object, Object> data) {
+        // Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        // Type type = new TypeToken<Map<Object, Object>>() {}.getType();
+        // Map<Object, Object> map = gson.fromJson(data, type);
+        Map<Object, Object> mapdata = (Map<Object, Object>)data.get("item");
         score  = 0;
         for (Object key : mapdata.keySet()) {
             Integer integer = (Integer) mapdata.get(key);

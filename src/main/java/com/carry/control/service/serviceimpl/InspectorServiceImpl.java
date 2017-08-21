@@ -55,6 +55,7 @@ public class InspectorServiceImpl  implements InspectorService {
         String[] strs = planadata.getPoint().split(",");
         data.put("longitude",strs[1]);
         data.put("latitude",strs[0]);
+        data.put("classid",planadata.getClassId());
 
         JsonObject jsondata = configMapper.getConfig(2).getConfigdata();
         JsonObject prosessdata = jsondata.get("桥梁").getAsJsonObject().
@@ -99,22 +100,23 @@ public class InspectorServiceImpl  implements InspectorService {
     }
     public void changeData (ClassReviewRecord classReviewRecord,InspectionRecord inspectionRecord,
                             ReviewPlan reviewPlan, InspectionData inspectionData) {
+        Gson gson = new Gson();
         long times = new Date().getTime();
         classReviewRecord.setClassid(inspectionData.getClassid());
         classReviewRecord.setPlanid(inspectionData.getPlanid());
-        classReviewRecord.setLowquality(inspectionData.getLowquality());
+        classReviewRecord.setLowquality(gson.toJson(inspectionData.getLowquality()));
         classReviewRecord.setStyle(inspectionData.getStyle());
-        classReviewRecord.setCreatedat(times);
+        classReviewRecord.setCreatedAt(times);
         inspectionRecord.setInspectorid(inspectionData.getInspectorid());
-        inspectionRecord.setLowquality(inspectionData.getLowquality());
-        inspectionRecord.setQuality(inspectionData.getQuality());
+        inspectionRecord.setLowquality(gson.toJson(inspectionData.getLowquality()));
+        inspectionRecord.setQuality(gson.toJson(inspectionData.getQuality()));
         inspectionRecord.setStyle(inspectionData.getStyle());
         inspectionRecord.setPlanid(inspectionData.getPlanid());
-        inspectionRecord.setCreatedat(times);
+        inspectionRecord.setCreatedAt(times);
         reviewPlan.setFirstman(inspectionData.getInspectorid());
-        reviewPlan.setLowquality(inspectionData.getLowquality());
+        reviewPlan.setLowquality(gson.toJson(inspectionData.getLowquality()));
         reviewPlan.setPower(inspectionData.getDepartment());
         reviewPlan.setPlanid(inspectionData.getPlanid());
-        reviewPlan.setCreatedat(times);
+        reviewPlan.setCreatedAt(times);
     }
 }

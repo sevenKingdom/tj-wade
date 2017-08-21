@@ -7,6 +7,7 @@ import com.carry.control.model.po.ConstructionPlan;
 import com.carry.control.model.po.InspectionData;
 import com.carry.control.model.po.UserCreat;
 import com.carry.control.service.InspectorService;
+import com.carry.control.service.NoticeService;
 import com.carry.control.service.TestService;
 import com.carry.control.service.UserService;
 import com.carry.util.IdentityVerification;
@@ -31,6 +32,9 @@ public class InspectorController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    NoticeService noticeService;
 
     @RequestMapping(value = "/acceptPlan" ,method = RequestMethod.POST)
     public CommonResponse<Map> getTest(@RequestParam("planid") long planid ,
@@ -115,7 +119,9 @@ public class InspectorController {
             inspectionData.setDepartment(userVer);
             userService.updateUserScore(inspectionData.getClassid(),0,inspectionData.getLowquality());
             responseData.setData(inspectorService.creatInspectionData(inspectionData));
-
+            if (inspectionData.getLowquality() != null) {
+                noticeService.sendNotice(inspectionData);
+            }
         } else {
             Map<String , Object> errorcode  = Maps.newHashMap();
             errorcode.put("code",1000);

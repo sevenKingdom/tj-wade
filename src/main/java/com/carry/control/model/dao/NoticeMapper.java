@@ -15,7 +15,7 @@ public interface NoticeMapper {
     public String getNoticeData(@RequestParam("level") int level,
                             @RequestParam("department") String department);
 
-    @RequestMapping(value = "/updateNotice" ,method = RequestMethod.POST)
+    @RequestMapping(value = "/mysql/updateNotice" ,method = RequestMethod.POST)
     public Long updateNotice(@RequestParam("id") long id,
                              @RequestParam("data") String data) ;
 }

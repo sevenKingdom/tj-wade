@@ -1,13 +1,15 @@
 package com.carry.control.model.po;
 
+import java.util.Map;
+
 /**
  * Created by songxianying on 17/8/13.
  */
 public class InspectionData {
     private Long inspectorid;
     private Long planid;
-    private String quality;
-    private String lowquality;
+    private Map<Object, Object> quality;
+    private Map<Object, Object> lowquality;
     private Integer style;
     private Long createdat;
     private Long classid;
@@ -30,19 +32,19 @@ public class InspectionData {
         this.planid = planid;
     }
 
-    public String getQuality() {
+    public Map<Object, Object> getQuality() {
         return quality;
     }
 
-    public void setQuality(String quality) {
+    public void setQuality(Map<Object, Object> quality) {
         this.quality = quality;
     }
 
-    public String getLowquality() {
+    public Map<Object, Object> getLowquality() {
         return lowquality;
     }
 
-    public void setLowquality(String lowquality) {
+    public void setLowquality(Map<Object, Object> lowquality) {
         this.lowquality = lowquality;
     }
 

@@ -1,8 +1,12 @@
 package com.carry.control.service.serviceimpl;
 
 
+import com.carry.control.model.dao.InspectorMapper;
 import com.carry.control.model.dao.NoticeMapper;
+import com.carry.control.model.po.ConstructionPlan;
+import com.carry.control.model.po.InspectionData;
 import com.carry.control.model.po.Notice;
+import com.carry.control.service.ConfigService;
 import com.carry.control.service.NoticeService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -26,6 +30,12 @@ public class NoticeServiceImpl implements NoticeService {
     @Autowired
     private NoticeMapper noticeMapper;
 
+    @Autowired
+    ConfigService configService;
+
+    @Autowired
+    private InspectorMapper inspectorMapper;
+
     @Override
     public Long updateNotice( long id, String data) {
         return noticeMapper.updateNotice(id, data);
@@ -44,6 +54,15 @@ public class NoticeServiceImpl implements NoticeService {
             mdata = map;
         }
         return mdata;
+    }
+
+    @Override
+    public String getNoticeMap () {
+        /*String data =  configService.getConfig(9).getData();
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        Type type = new TypeToken<Map<Object, Object>>() {}.getType();
+        Map<Object, Object> map = gson.fromJson(data, type);*/
+        return configService.getConfig(9).getData();
     }
 
     @Override
@@ -76,5 +95,25 @@ public class NoticeServiceImpl implements NoticeService {
             mdata.put("mails",mails);
         }
         return mdata;
+    }
+    @Override
+    public void sendNotice(InspectionData inspectionData){
+        getNoticeMap();
+        Map<Object,Object> itemdata = (Map<Object,Object>)inspectionData.getLowquality().get("item");
+        ConstructionPlan planadata = inspectorMapper.getByid(inspectionData.getPlanid());
+
+        String str = planadata.getBridgeName()+" "+
+                planadata.getPierNum()+" "+planadata.getStructure()+" "+planadata.getProcess()+" ";
+        List<Map<String, Object>> listdata = Lists.newArrayList();
+        for (Object key : itemdata.keySet()) {
+            Map<String, Object> data = Maps.newHashMap();
+            StringBuffer sb = new StringBuffer();
+            sb.append(str+key);
+            data.put("content",sb.toString());
+            data.put("level",itemdata.get(key));
+            listdata.add(data);
+        }
+
+
     }
 }

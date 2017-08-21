@@ -10,7 +10,7 @@ public class ReviewPlan implements Serializable {
      private Long reviewer;
      private String power;
      private Long firstman;
-     private Long createdat;
+     private Long createdAt;
 
 
      public Long getId(){
@@ -61,14 +61,15 @@ public class ReviewPlan implements Serializable {
 	 	this.firstman=firstman;
 	 }
 
-     public Long getCreatedat(){
-     	return createdat;
-     }
-     
-     public void setCreatedat(Long createdat){
-	 	this.createdat=createdat;
-	 }
-	@Override
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
     public String toString() {
         return "ReviewPlan{" +
                 	"id=" + id +
@@ -77,7 +78,7 @@ public class ReviewPlan implements Serializable {
                 	"reviewer=" + reviewer +
                 	"power=" + power +
                 	"firstman=" + firstman +
-                	"createdat=" + createdat +
+                	"createdat=" + createdAt +
                 '}';
     }
 }

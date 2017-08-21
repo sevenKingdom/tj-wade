@@ -12,5 +12,5 @@ public interface UserService {
     Map<String,Object> login(String name , String password);
     long logoff( long id);
     Map<String,Object> creatUser (UserCreat userCreat) ;
-    Long updateUserScore(Long id, Integer score,String data);
+    Long updateUserScore(Long id, Integer score,Map<Object, Object> data);
 }

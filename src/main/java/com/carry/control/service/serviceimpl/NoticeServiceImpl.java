@@ -1,6 +1,7 @@
 package com.carry.control.service.serviceimpl;
 
 
+import com.carry.commit.SendNotice;
 import com.carry.control.model.dao.InspectorMapper;
 import com.carry.control.model.dao.NoticeMapper;
 import com.carry.control.model.po.ConstructionPlan;
@@ -62,7 +63,7 @@ public class NoticeServiceImpl implements NoticeService {
         Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
         Type type = new TypeToken<Map<Object, Object>>() {}.getType();
         Map<Object, Object> map = gson.fromJson(data, type);*/
-        return configService.getConfig(9).getData();
+        return noticeMapper.getNoticeData(0, "1.2.3");
     }
 
     @Override
@@ -98,22 +99,8 @@ public class NoticeServiceImpl implements NoticeService {
     }
     @Override
     public void sendNotice(InspectionData inspectionData){
-        getNoticeMap();
-        Map<Object,Object> itemdata = (Map<Object,Object>)inspectionData.getLowquality().get("item");
         ConstructionPlan planadata = inspectorMapper.getByid(inspectionData.getPlanid());
-
-        String str = planadata.getBridgeName()+" "+
-                planadata.getPierNum()+" "+planadata.getStructure()+" "+planadata.getProcess()+" ";
-        List<Map<String, Object>> listdata = Lists.newArrayList();
-        for (Object key : itemdata.keySet()) {
-            Map<String, Object> data = Maps.newHashMap();
-            StringBuffer sb = new StringBuffer();
-            sb.append(str+key);
-            data.put("content",sb.toString());
-            data.put("level",itemdata.get(key));
-            listdata.add(data);
-        }
-
-
+        SendNotice notice = new SendNotice(planadata,inspectionData,getNoticeMap());
+        new Thread(notice).start();
     }
 }

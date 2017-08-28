@@ -45,13 +45,11 @@ public class InspectorController {
 
         if (userVer != null && userVer.equals(authorVer)) {
             inspectorService.updatePlanInspector(userid,planid);
+            responseData.setStatus(200);
         } else {
-            Map<String , Object> errorcode  = Maps.newHashMap();
-            errorcode.put("code",1000);
-            errorcode.put("message","meiquanxian");
-            responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
-        responseData.setStatus(200);
         return responseData;
     }
 
@@ -65,13 +63,11 @@ public class InspectorController {
             long endTime = DateUtil.getEndTime().getTimeInMillis();
             List<ConstructionPlan> data = inspectorService.getListByInspectorid(inspectorid, startTime, endTime);
             responseData.setData(data);
+            responseData.setStatus(200);
         } else {
-            Map<String , Object> errorcode  = Maps.newHashMap();
-            errorcode.put("code",1000);
-            errorcode.put("message","meiquanxian");
-            responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
-        responseData.setStatus(200);
         return  responseData;
     }
     @RequestMapping(value = "/getInspectorData")
@@ -80,16 +76,14 @@ public class InspectorController {
         CommonResponse responseData = new CommonResponse();
         String userVer = identityVerification.shortVerification(token);
         if (userVer != null ) {
-
             Map<String ,Object> data = inspectorService.getInspectorData(planid);
             responseData.setData(data);
+            responseData.setStatus(200);
         } else {
-            Map<String , Object> errorcode  = Maps.newHashMap();
-            errorcode.put("code",1000);
-            errorcode.put("message","meiquanxian");
-            responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
-        responseData.setStatus(200);
+
         return  responseData;
     }
 
@@ -98,16 +92,14 @@ public class InspectorController {
         CommonResponse responseData = new CommonResponse();
         String userVer = identityVerification.shortVerification(token);
         if (userVer != null ) {
-
             Map<Object ,Object> data = inspectorService.getEquipmentData();
             responseData.setData(data);
+            responseData.setStatus(200);
         } else {
-            Map<String , Object> errorcode  = Maps.newHashMap();
-            errorcode.put("code",1000);
-            errorcode.put("message","meiquanxian");
-            responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
-        responseData.setStatus(200);
+
         return  responseData;
     }
 
@@ -122,13 +114,12 @@ public class InspectorController {
             if (inspectionData.getLowquality() != null) {
                 noticeService.sendNotice(inspectionData);
             }
+            responseData.setStatus(200);
         } else {
-            Map<String , Object> errorcode  = Maps.newHashMap();
-            errorcode.put("code",1000);
-            errorcode.put("message","meiquanxian");
-            responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
-        responseData.setStatus(200);
+
         return  responseData;
     }
 

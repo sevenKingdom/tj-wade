@@ -33,14 +33,13 @@ public class ReviewPlanController {
         String token1 = identityVerification.shortVerification(token);
         if (token1 != null ) {
            responseData.setData(reviewPlanService.findReviewPlanByToken(token1));
+           responseData.setStatus(200);
         } else {
-           Map<String , Object> errorcode  = Maps.newHashMap();
-           errorcode.put("code",1000);
-           errorcode.put("message","meiquanxian");
-           responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
 
-        responseData.setStatus(200);
+
         return responseData;
     }
     @RequestMapping(value = "/updateReviewPlan" ,method = RequestMethod.POST)
@@ -50,11 +49,10 @@ public class ReviewPlanController {
         String token1 = identityVerification.shortVerification(token);
         if (token1 != null ) {
             responseData.setData(reviewPlanService.updateReviewPlan(id, reviewer));
+            responseData.setStatus(200);
         } else {
-            Map<String , Object> errorcode  = Maps.newHashMap();
-            errorcode.put("code",1000);
-            errorcode.put("message","meiquanxian");
-            responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
        return responseData;
     }
@@ -72,16 +70,14 @@ public class ReviewPlanController {
         CommonResponse responseData = new CommonResponse();
         String userVer = identityVerification.shortVerification(token);
         if (userVer != null ) {
-
             Map<String ,Object> data = reviewPlanService.findReviewData(planid);
-            responseData.setData(null);
+            responseData.setData(data);
+            responseData.setStatus(200);
         } else {
-            Map<String , Object> errorcode  = Maps.newHashMap();
-            errorcode.put("code",1000);
-            errorcode.put("message","meiquanxian");
-            responseData.setErrorcode(errorcode);
+            responseData.setStatus(400);
+            responseData.setErrormessage("请重新登录！");
         }
-        responseData.setStatus(200);
+
         return  responseData;
     }
 

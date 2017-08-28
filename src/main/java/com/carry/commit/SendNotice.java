@@ -34,6 +34,8 @@ public class SendNotice  implements Runnable{
 
     private String noticeMap;
 
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH");
+
     public SendNotice (ConstructionPlan planadata , InspectionData inspectionData,String noticeMap) {
         this.planadata = planadata;
         this.inspectionData = inspectionData;
@@ -61,7 +63,7 @@ public class SendNotice  implements Runnable{
         }
         String mail = mailstr.substring(0,mailstr.length()-1); //发送对象的邮箱
         title = "铁建风险通知";
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH");
+
         content = "<div>"+content+"</div><br/><hr/>" +
                 "<div><span style=\"float:right;\">"+df.format(new Date())+"</span></div>";
         MailInfo info = new MailInfo();
@@ -76,7 +78,7 @@ public class SendNotice  implements Runnable{
         return "ok";
     }
     public String sendPhone(String smsText , Set<String> phones){
-
+        smsText = smsText + df.format(new Date());
         StringBuffer phonestr = new StringBuffer();
         for (String str : phones) {
             phonestr.append(str + ",");
@@ -131,7 +133,7 @@ public class SendNotice  implements Runnable{
         for (Object key : itemdata.keySet()) {
             Map<String, Object> data = Maps.newHashMap();
             StringBuffer sb = new StringBuffer();
-            sb.append(str+key);
+            sb.append(str+key+" 发生"+itemdata.get(key)+"级风险");
             data.put("content",sb.toString());
             data.put("level",itemdata.get(key));
             listdata.add(data);

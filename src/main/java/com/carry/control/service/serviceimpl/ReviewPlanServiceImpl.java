@@ -74,14 +74,16 @@ public class ReviewPlanServiceImpl implements ReviewPlanService {
         Type type = new TypeToken<Map<Object, Object>>() {}.getType();
         Map<Object, Object> map = gson.fromJson(rplan.getLowquality(), type);
         Map<Object, Object> data1 = Maps.newHashMap();
+        String imgss = "";
         if (null != map.get("img")) {
             Map<Object, Object> data2 = (Map<Object, Object>)map.get("img");
             for (Object key : data2.keySet()) {
                 List<String> imgs = (List<String>)data2.get(key);
                 data1.put(key,imgs.get(0));
+                imgss = imgs.get(0);
             }
         }
-        data.put("img",data1);
+        data.put("img",imgss);
         data.put("entry",map.get("item"));
         return data;
     }

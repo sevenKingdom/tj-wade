@@ -65,7 +65,7 @@ public class ReviewPlanController {
     }
 
     @RequestMapping(value = "/getReviewData")
-    public CommonResponse<Map>  getReviewData(@RequestParam("id") Long planid,
+    public CommonResponse<Map>  getReviewData(@RequestParam("planid") Long planid,
                                                  @RequestParam("token") String token) {
         CommonResponse responseData = new CommonResponse();
         String userVer = identityVerification.shortVerification(token);

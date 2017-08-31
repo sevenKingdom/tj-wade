@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Service
 public class InspectorServiceImpl  implements InspectorService {
-    private static final String SHOW_URL = "http://192.168.10.163:8763/file/";
+    private static final String SHOW_URL = "http://101.200.52.80:8763/file/";
     @Autowired
     private InspectorMapper inspectorMapper;
     @Autowired

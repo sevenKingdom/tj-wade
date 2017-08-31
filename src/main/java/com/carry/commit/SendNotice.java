@@ -50,8 +50,16 @@ public class SendNotice  implements Runnable{
         Map<Object, Object> map = gson.fromJson(noticeMap, type);
         for ( Map<String, Object> po : listdata) {
             Map<String, Set<String>> data = getnamedata(map,inspectionData.getDepartment(),(Integer)po.get("level"));
-            sendMail("",po.get("content").toString(),data.get("mails"));
-            sendPhone(po.get("content").toString(),data.get("phones"));
+            try {
+                sendPhone(po.get("content").toString(),data.get("phones"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                sendMail("",po.get("content").toString(),data.get("mails"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }

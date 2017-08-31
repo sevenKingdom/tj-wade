@@ -59,6 +59,13 @@ public class MailSendUtil {
         p.setProperty("mail.smtp.user", info.getFormName());
         p.setProperty("mail.smtp.pass", info.getFormPassword());
 
+        final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+
+        p.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
+        p.setProperty("mail.smtp.socketFactory.fallback", "false");
+        p.setProperty("mail.smtp.port", "465");
+        p.setProperty("mail.smtp.socketFactory.port", "465");
+
         // 根据邮件会话属性和密码验证器构造一个发送邮件的session
         Session session = Session.getInstance(p, new Authenticator(){
             protected PasswordAuthentication getPasswordAuthentication() {

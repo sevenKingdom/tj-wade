@@ -33,9 +33,14 @@ public class ReviewPlanServiceImpl implements ReviewPlanService {
         List<ReviewPlan> data = reviewPlanMapper.findReviewPlanByToken(token);
         List<Object> newdata = Lists.newArrayList();
         for (ReviewPlan po : data) {
-            ConstructionPlan plan = inspectorMapper.getByid(po.getPlanid());
-            plan.setId(po.getId());
-            newdata.add(plan);
+            try {
+                ConstructionPlan plan = inspectorMapper.getByid(po.getPlanid());
+                plan.setId(po.getId());
+                newdata.add(plan);
+            } catch (Exception e ) {
+                e.printStackTrace();
+            }
+
         }
         return newdata;
     }
@@ -49,9 +54,13 @@ public class ReviewPlanServiceImpl implements ReviewPlanService {
         List<ReviewPlan> data = reviewPlanMapper.findReviewPlanByreviewer(reviewer);
         List<Object> newdata = Lists.newArrayList();
         for (ReviewPlan po : data) {
-            ConstructionPlan plan = inspectorMapper.getByid(po.getPlanid());
-            plan.setId(po.getId());
-            newdata.add(plan);
+            try {
+                ConstructionPlan plan = inspectorMapper.getByid(po.getPlanid());
+                plan.setId(po.getId());
+                newdata.add(plan);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return newdata;
     }
